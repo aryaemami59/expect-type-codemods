@@ -30,6 +30,18 @@ const eslintConfig = [
       },
     },
     rules: {
+      '@typescript-eslint/consistent-type-imports': [
+        2,
+        {
+          prefer: 'type-imports',
+          fixStyle: 'separate-type-imports',
+          disallowTypeAnnotations: true,
+        },
+      ],
+      '@typescript-eslint/consistent-type-exports': [
+        2,
+        { fixMixedExportsWithInlineTypeSpecifier: false },
+      ],
       'vitest/valid-title': [0],
     },
   },
