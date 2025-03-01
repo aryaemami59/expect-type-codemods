@@ -1931,6 +1931,8 @@ __metadata:
     tsup: "npm:^8.4.0"
     typescript: "npm:^5.8.2"
     vitest: "npm:^3.0.7"
+  bin:
+    expect-type-codemods: dist/bin.js
   languageName: unknown
   linkType: soft
 

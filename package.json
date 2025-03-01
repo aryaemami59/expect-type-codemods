@@ -4,7 +4,8 @@
   "description": "A collection of codemods for the expect-type library",
   "dependencies": {
     "globby": "^14.1.0",
-    "jscodeshift": "^17.1.2"
+    "jscodeshift": "^17.1.2",
+    "prettier": "^3.5.2"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.17.4",
@@ -12,7 +13,6 @@
     "@types/node": "^22.13.6",
     "eslint": "^9.21.0",
     "expect-type": "^1.2.0",
-    "prettier": "^3.5.2",
     "publint": "^0.3.7",
     "rimraf": "^6.0.1",
     "tsup": "^8.4.0",
@@ -53,6 +53,7 @@
     },
     "./package.json": "./package.json"
   },
+  "bin": "dist/bin.js",
   "scripts": {
     "build": "tsup --config=$INIT_CWD/tsup.config.mts",
     "check-exports": "attw --pack $INIT_CWD",
@@ -64,7 +65,7 @@
     "lint": "eslint $INIT_CWD",
     "prepack": "yarn clean && yarn build",
     "test-types": "tsc -p $INIT_CWD/tsconfig.json",
-    "test": "vitest --run"
+    "test": "vitest --run --config=$INIT_CWD/vitest.config.mts"
   },
   "engines": {
     "node": ">= 16"

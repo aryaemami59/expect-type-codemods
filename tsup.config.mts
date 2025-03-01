@@ -11,6 +11,7 @@ const tsupConfig = defineConfig((overrideOptions): Options[] => {
     clean: true,
     entry: {
       index: path.join(__dirname, 'src', 'index.ts'),
+      bin: path.join(__dirname, 'src', 'bin.ts'),
     },
     removeNodeProtocol: false,
     shims: true,
