@@ -1,0 +1,203 @@
+name: CI
+
+on: [push, pull_request, workflow_dispatch]
+
+concurrency:
+  group: '${{ github.workflow }} - ${{ github.head_ref || github.ref }}'
+  cancel-in-progress: true
+
+jobs:
+  check-lint-and-formatting:
+    name: Check lint and formatting with Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        node-version: [22]
+        os: [ubuntu-latest]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }} and Install dependencies on ${{ matrix.os }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+          check-latest: true
+
+      - name: Install dependencies on ${{ matrix.node-version }}
+        run: yarn install
+
+      - name: Check for duplicate packages
+        run: yarn dedupe --check --strategy highest
+
+      - name: Check formatting
+        run: yarn run format-check
+
+      # - name: Lint files
+      #   run: yarn run lint
+
+      - name: Run publint
+        run: yarn run check-package-json
+
+  test-types:
+    name: Test types with TypeScript ${{ matrix.ts }} on ${{ matrix.os }} and Node.js ${{ matrix.node-version }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        node-version: [22]
+        os: [ubuntu-latest]
+        ts: [5.3, 5.4, 5.5, 5.6, 5.7, 5.8]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }} and Install dependencies on ${{ matrix.os }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+          check-latest: true
+
+      - name: Install dependencies on ${{ matrix.node-version }}
+        run: yarn install
+
+      - name: Install TypeScript ${{ matrix.ts }}
+        run: yarn up typescript@${{ matrix.ts }}
+
+      - name: Run type tests
+        run: yarn run test-types
+
+  build:
+    name: Build with Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        node-version: [18, 20, 22, latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }} and Install dependencies on ${{ matrix.os }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+          check-latest: true
+
+      - name: Install dependencies on ${{ matrix.node-version }}
+        run: yarn install
+
+      - name: Pack with Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
+        id: pack
+        run: yarn pack
+
+      - name: Upload artifact with Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
+        uses: actions/upload-artifact@v4
+        id: artifact-upload-step
+        with:
+          name: package
+          path: ./package.tgz
+
+      - name: Did we fail?
+        if: failure()
+        run: ls -R .
+
+  test:
+    name: Test with Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
+    needs: [build]
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        node-version: [18, 20, 22, latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }} and Install dependencies on ${{ matrix.os }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+          check-latest: true
+
+      - name: Install dependencies on ${{ matrix.node-version }}
+        run: yarn install
+
+      - name: Download build artifact for with Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
+        uses: actions/download-artifact@v4
+        with:
+          name: package-${{ matrix.node-version }}-${{ matrix.os }}
+          path: .
+
+      - name: Install build artifact for with Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
+        run: yarn add -D ./package.tgz
+
+      - name: Test examples for with Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
+        run: yarn test
+
+      - name: Did we fail?
+        if: failure()
+        run: |
+          yarn why
+          ls -R
+
+  are-the-types-wrong:
+    name: Check if the type definitions for are correct with Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    needs: [build]
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        node-version: [22]
+        os: [ubuntu-latest]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }} and Install dependencies on ${{ matrix.os }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+          check-latest: true
+
+      - name: Install dependencies on ${{ matrix.node-version }}
+        run: yarn install
+
+      - name: Download build artifact for with Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
+        uses: actions/download-artifact@v4
+        with:
+          name: package-${{ matrix.node-version }}-${{ matrix.os }}
+          path: .
+
+      - name: Display folder structure
+        run: ls -l .
+
+      - name: Run are-the-types-wrong for with Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
+        run: yarn attw ./package.tgz --format table
+
+      - name: Did we fail?
+        if: failure()
+        run: ls -R
