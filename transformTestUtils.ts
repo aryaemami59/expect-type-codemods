@@ -44,8 +44,8 @@ export const runTransformTest = (
         })
 
         describe(`${testName}${extension}`, () => {
-          it('transforms correctly', async () => {
-            const actualOutput = await applyTransform(
+          it('transforms correctly', () => {
+            const actualOutput = applyTransform(
               { default: transform, parser },
               {},
               {
@@ -58,8 +58,8 @@ export const runTransformTest = (
             expect(actualOutput).toBe(expectedOutput.trim())
           })
 
-          it('is idempotent', async () => {
-            const actualOutput = await applyTransform(
+          it('is idempotent', () => {
+            const actualOutput = applyTransform(
               { default: transform, parser },
               {},
               {

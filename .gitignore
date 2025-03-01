@@ -24,6 +24,7 @@ yalc.sig
 .idea/
 .vscode/
 temp/
+.temp/
 .tmp-projections
 build/
 .rts2*

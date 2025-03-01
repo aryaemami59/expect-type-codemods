@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
+    "allowJs": true,
     "allowSyntheticDefaultImports": true,
+    "checkJs": true,
     "declaration": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,

@@ -9,23 +9,22 @@
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.17.4",
+    "@eslint/js": "^9.21.0",
+    "@types/eslint-config-prettier": "^6.11.3",
     "@types/jscodeshift": "^0.12.0",
     "@types/node": "^22.13.6",
+    "@vitest/eslint-plugin": "^1.1.36",
     "eslint": "^9.21.0",
+    "eslint-config-prettier": "^10.0.2",
     "expect-type": "^1.2.0",
+    "jiti": "^2.4.2",
     "publint": "^0.3.7",
     "rimraf": "^6.0.1",
     "tsup": "^8.4.0",
     "typescript": "^5.8.2",
+    "typescript-eslint": "^8.25.0",
     "vitest": "^3.0.7"
   },
-  "files": [
-    "bin/*",
-    "transforms/**/index.ts",
-    "transforms/**/README.md",
-    "package.json",
-    "README.md"
-  ],
   "sideEffects": false,
   "type": "module",
   "exports": {
@@ -53,12 +52,20 @@
     },
     "./package.json": "./package.json"
   },
-  "bin": "dist/bin.js",
+  "bin": "./dist/bin.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "source": "./src/index.ts",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
     "build": "tsup --config=$INIT_CWD/tsup.config.mts",
     "check-exports": "attw --pack $INIT_CWD",
     "check-package-json": "publint --strict $INIT_CWD",
-    "clean": "rimraf $INIT_CWD/dist/",
+    "clean": "rimraf -g $INIT_CWD/'{dist,coverage,?(.)temp}'/",
     "format-check": "prettier -c .",
     "format": "prettier -w .",
     "lint-fix": "eslint --fix $INIT_CWD",

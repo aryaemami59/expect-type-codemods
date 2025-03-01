@@ -1,8 +1,7 @@
 import type { Transform } from 'jscodeshift'
 import type { TestOptions } from 'jscodeshift/src/testUtils.js'
-import { format, resolveConfig } from 'prettier'
 
-export const toMatchObjectTypeTransform: Transform = async (file, api) => {
+export const toMatchObjectTypeTransform: Transform = (file, api) => {
   const j = api.jscodeshift
   const root = j(file.source)
 
@@ -26,18 +25,11 @@ export const toMatchObjectTypeTransform: Transform = async (file, api) => {
       callee.property.name = 'toMatchObjectType'
     })
 
-  const prettierConfig = await resolveConfig(file.path)
-
-  const source = await format(
-    root.toSource({
-      lineTerminator: '\n',
-    }),
-    { ...prettierConfig, filepath: file.path },
-  )
+  const source = root.toSource({
+    lineTerminator: '\n',
+  })
 
   return source
 }
 
 export const parser = 'tsx' satisfies TestOptions['parser']
-
-// export default toMatchObjectTypeTransform

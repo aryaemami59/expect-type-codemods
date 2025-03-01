@@ -17,7 +17,7 @@ const tsupConfig = defineConfig((overrideOptions): Options[] => {
     shims: true,
     sourcemap: true,
     splitting: false,
-    target: ['esnext', 'node20'],
+    target: ['esnext', 'node18'],
     tsconfig: path.join(__dirname, 'tsconfig.build.json'),
     ...overrideOptions,
   } satisfies Options

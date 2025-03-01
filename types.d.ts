@@ -1,3 +1,4 @@
+import type { Transform } from 'jscodeshift'
 import 'jscodeshift/src/testUtils.js'
 
 declare module 'jscodeshift/src/testUtils.js' {
@@ -8,7 +9,7 @@ declare module 'jscodeshift/src/testUtils.js' {
           parser: TestOptions['parser']
         }
       | Transform,
-    options: Options | null | undefined,
+    options: Record<string, unknown> | null | undefined,
     input: {
       path?: string
       source: string

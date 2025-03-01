@@ -14,11 +14,7 @@ const execFile = promisify(child_process.execFile)
 const extensions = 'ts,tsx,js,jsx,mts,cts,mjs,cjs'
 
 const runCodemod = async () => {
-  const targetedFiles = await globby(process.argv.slice(2), {
-    dot: true,
-    absolute: true,
-    onlyFiles: false,
-  })
+  const targetedFiles = await globby(process.argv.slice(2))
 
   await execFile(
     'jscodeshift',
