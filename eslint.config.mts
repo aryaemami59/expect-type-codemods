@@ -6,6 +6,7 @@ import { configs } from 'typescript-eslint'
 
 const eslintConfig = [
   {
+    name: 'overrides/global-ignores',
     ignores: [
       '**/dist/',
       '**/.yalc/',
@@ -18,11 +19,12 @@ const eslintConfig = [
       '**/__testfixtures__/',
     ],
   },
-  js.configs.recommended,
+  { name: '@eslint/js/recommended', ...js.configs.recommended },
   ...configs.strictTypeChecked,
   ...configs.stylisticTypeChecked,
-  vitestPlugin.configs.recommended,
+  { name: 'vitest/recommended', ...vitestPlugin.configs.recommended },
   {
+    name: 'overrides/overrides',
     languageOptions: {
       parserOptions: {
         projectService: true,
@@ -55,9 +57,25 @@ const eslintConfig = [
         },
       ],
       'vitest/valid-title': [0],
+      'vitest/no-alias-methods': [2],
+      'vitest/no-disabled-tests': [2],
+      'vitest/no-focused-tests': [2],
+      'vitest/no-test-prefixes': [2],
+      'vitest/no-test-return-statement': [2],
+      'vitest/prefer-each': [2],
+      'vitest/prefer-spy-on': [2],
+      'vitest/prefer-to-be': [2],
+      'vitest/prefer-to-contain': [2],
+      'vitest/prefer-to-have-length': [2],
+    },
+
+    settings: {
+      vitest: {
+        typecheck: true,
+      },
     },
   },
-  prettierConfig,
+  { name: 'eslint-config-prettier', ...prettierConfig },
 ] satisfies ConfigArray
 
 export default eslintConfig
