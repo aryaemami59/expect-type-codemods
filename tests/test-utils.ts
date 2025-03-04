@@ -19,11 +19,11 @@ export const tempParentDirectoryPath = path.join(
 
 export const extensionsToTest = ['ts', 'tsx', 'mts', 'cts'] as const
 
-export const defaultCLICommand = packageJson.name
+const defaultCLICommand = packageJson.name
 
-export const defaultCLIArguments = []
+const defaultCLIArguments = [] as const satisfies string[]
 
-export const defaultExecFileOptions = {
+const defaultExecFileOptions = {
   encoding: 'utf-8',
   shell: true,
 } as const satisfies ExecFileOptionsWithOtherEncoding
