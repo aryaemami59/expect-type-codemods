@@ -5,24 +5,24 @@
   "dependencies": {
     "globby": "^14.1.0",
     "jscodeshift": "^17.1.2",
-    "prettier": "^3.5.2"
+    "prettier": "^3.5.3"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.17.4",
     "@eslint/js": "^9.21.0",
     "@types/eslint-config-prettier": "^6.11.3",
     "@types/jscodeshift": "^0.12.0",
-    "@types/node": "^22.13.7",
+    "@types/node": "^22.13.9",
     "@vitest/eslint-plugin": "^1.1.36",
     "eslint": "^9.21.0",
     "eslint-config-prettier": "^10.0.2",
     "expect-type": "^1.2.0",
     "jiti": "^2.4.2",
-    "publint": "^0.3.7",
+    "publint": "^0.3.8",
     "rimraf": "^6.0.1",
     "tsup": "^8.4.0",
     "typescript": "^5.8.2",
-    "typescript-eslint": "^8.25.0",
+    "typescript-eslint": "^8.26.0",
     "vitest": "^3.0.7"
   },
   "sideEffects": false,
