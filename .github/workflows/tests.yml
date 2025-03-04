@@ -102,13 +102,6 @@ jobs:
         id: pack
         run: yarn pack
 
-      - name: Build with Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
-        if: matrix.os == 'macos-latest'
-        run: yarn run build
-
-      - name: Run publint
-        run: yarn run check-package-json
-
       - name: Upload artifact with Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
         uses: actions/upload-artifact@v4
         id: artifact-upload-step
@@ -197,8 +190,50 @@ jobs:
       - name: Display folder structure
         run: ls -l .
 
-      - name: Run are-the-types-wrong for with Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
+      - name: Run are-the-types-wrong with Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
         run: yarn attw ./package.tgz --format table
+
+      - name: Did we fail?
+        if: failure()
+        run: ls -R
+
+  publint:
+    name: Check if the package.json is correct with Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    needs: [build]
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        node-version: [20, 22, latest]
+        os: [ubuntu-latest]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }} and Install dependencies on ${{ matrix.os }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+          check-latest: true
+
+      - name: Install dependencies on ${{ matrix.node-version }}
+        run: yarn install
+
+      - name: Download build artifact for with Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
+        uses: actions/download-artifact@v4
+        with:
+          name: package-${{ matrix.node-version }}-${{ matrix.os }}
+          path: .
+
+      - name: Display folder structure
+        run: ls -l .
+
+      - name: Run publint with Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
+        run: yarn publint --strict ./package.tgz
 
       - name: Did we fail?
         if: failure()
