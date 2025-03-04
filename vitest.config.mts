@@ -32,6 +32,8 @@ const vitestConfig = defineConfig({
     chaiConfig: {
       truncateThreshold: 10_000,
     },
+
+    globalSetup: ['./vitest.global.setup.ts'],
   },
 
   define: {

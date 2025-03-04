@@ -42,6 +42,18 @@ const eslintConfig = [
         2,
         { fixMixedExportsWithInlineTypeSpecifier: false },
       ],
+      '@typescript-eslint/no-unused-vars': [
+        2,
+        {
+          args: 'all',
+          argsIgnorePattern: '^_',
+          caughtErrors: 'all',
+          caughtErrorsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+        },
+      ],
       'vitest/valid-title': [0],
     },
   },

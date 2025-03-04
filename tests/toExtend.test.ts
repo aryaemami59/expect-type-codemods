@@ -3,23 +3,16 @@ import * as fs from 'node:fs/promises'
 import * as path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { promisify } from 'node:util'
-import {
-  parser,
-  toMatchObjectTypeTransform,
-} from '../src/transforms/toMatchObjectType.js'
+import { parser, toExtendTransform } from '../src/transforms/toExtend.js'
 import { runTransformTest } from '../transformTestUtils.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const execFile = promisify(child_process.execFile)
 
-const fixturePath = path.join(
-  __dirname,
-  '__testfixtures__',
-  'toMatchObjectType',
-)
+const fixturePath = path.join(__dirname, '__testfixtures__', 'toExtend')
 
-const tempDir = path.join(__dirname, '..', '.temp', 'toMatchObjectType')
+const tempDir = path.join(__dirname, '..', '.temp', 'toExtend')
 
 const src = path.join(fixturePath, 'basic-ts.input.ts')
 
@@ -29,13 +22,8 @@ const destFiles = extensionsToTest.map((extensionToTest) =>
   path.join(tempDir, `basic-ts.output.${extensionToTest}`),
 )
 
-describe(toMatchObjectTypeTransform, () => {
-  runTransformTest(
-    'toMatchObjectType',
-    toMatchObjectTypeTransform,
-    parser,
-    fixturePath,
-  )
+describe(toExtendTransform, () => {
+  runTransformTest('toExtend', toExtendTransform, parser, fixturePath)
 })
 
 describe('cli test', () => {
@@ -49,7 +37,7 @@ describe('cli test', () => {
     await expect(
       execFile(
         'expect-type-codemods',
-        ['toMatchObjectType', './**/*-*.*.{m,c,}ts{x,}'],
+        ['toExtend', './**/*-*.*.{m,c,}ts{x,}'],
         {
           cwd: tempDir,
           encoding: 'utf-8',

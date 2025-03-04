@@ -1,7 +1,7 @@
 import type { Transform } from 'jscodeshift'
 import type { TestOptions } from 'jscodeshift/src/testUtils.js'
 
-export const toMatchObjectTypeTransform: Transform = (file, api) => {
+export const toExtendTransform: Transform = (file, api) => {
   const j = api.jscodeshift
   const root = j(file.source)
 
@@ -22,7 +22,7 @@ export const toMatchObjectTypeTransform: Transform = (file, api) => {
         return
       }
 
-      callee.property.name = 'toMatchObjectType'
+      callee.property.name = 'toExtend'
     })
 
   const source = root.toSource({
@@ -34,4 +34,4 @@ export const toMatchObjectTypeTransform: Transform = (file, api) => {
 
 export const parser = 'tsx' satisfies TestOptions['parser']
 
-export default toMatchObjectTypeTransform
+export default toExtendTransform

@@ -13,18 +13,18 @@ const execFile = promisify(child_process.execFile)
 
 const extensions = 'ts,tsx,js,jsx,mts,cts,mjs,cjs'
 
+const transformerDirectory = path.join(__dirname, '..', 'dist', 'transforms')
+const transformerFilePath = path.join(
+  transformerDirectory,
+  `${process.argv[2]}.js`,
+)
+
 const runCodemod = async () => {
-  const targetedFiles = await globby(process.argv.slice(2))
+  const targetedFiles = await globby(process.argv.slice(3))
 
   await execFile(
     'jscodeshift',
-    [
-      '-t',
-      path.join(__dirname, 'index.js'),
-      '--extensions',
-      extensions,
-      ...targetedFiles,
-    ],
+    ['-t', transformerFilePath, '--extensions', extensions, ...targetedFiles],
     { shell: true },
   )
 }

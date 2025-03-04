@@ -1,5 +1,2 @@
-import { toMatchObjectTypeTransform } from './transforms/toMatchObjectType.js'
-
-export { parser } from './transforms/toMatchObjectType.js'
-
-export default toMatchObjectTypeTransform
+export { toExtendTransform } from './transforms/toExtend.js'
+export { toMatchObjectTypeTransform } from './transforms/toMatchObjectType.js'

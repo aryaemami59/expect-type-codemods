@@ -9,10 +9,11 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const tsupConfig = defineConfig((overrideOptions): Options[] => {
   const commonOptions = {
     clean: true,
-    entry: {
-      index: path.join(__dirname, 'src', 'index.ts'),
-      bin: path.join(__dirname, 'src', 'bin.ts'),
-    },
+    entry: ['src/index.ts', 'src/transforms/**/*.ts'],
+    // FIXME: This needs to be fixed.
+    // entry: {
+    //   index: path.join(__dirname, 'src', 'index.ts'),
+    // },
     removeNodeProtocol: false,
     shims: true,
     sourcemap: true,
@@ -32,6 +33,16 @@ const tsupConfig = defineConfig((overrideOptions): Options[] => {
       ...commonOptions,
       name: `${packageJson.name} CJS Development`,
       format: ['cjs'],
+    },
+    {
+      ...commonOptions,
+      name: `${packageJson.name} CLI Development`,
+      entry: {
+        bin: path.join(__dirname, 'src', 'bin.ts'),
+      },
+      external: [packageJson.name],
+      format: ['cjs', 'esm'],
+      minify: true,
     },
     {
       ...commonOptions,
