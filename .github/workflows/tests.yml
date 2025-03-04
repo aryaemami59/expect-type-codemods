@@ -41,6 +41,12 @@ jobs:
       - name: Lint files
         run: yarn run lint
 
+      - name: Run build
+        run: yarn run build
+
+      - name: Run tests
+        run: yarn run test
+
   test-types:
     name: Test types with TypeScript ${{ matrix.ts }} on ${{ matrix.os }} and Node.js ${{ matrix.node-version }}
     runs-on: ${{ matrix.os }}
@@ -165,7 +171,7 @@ jobs:
 
       matrix:
         node-version: [20, 22, latest]
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, windows-latest]
 
     steps:
       - name: Checkout repository
@@ -207,7 +213,7 @@ jobs:
 
       matrix:
         node-version: [20, 22, latest]
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, windows-latest]
 
     steps:
       - name: Checkout repository
