@@ -16,14 +16,17 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
+    "outDir": "./dist",
     "resolveJsonModule": true,
+    "rootDir": "./",
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
     "target": "ESNext",
     "types": ["vitest/globals", "vitest/importMeta"],
     "useDefineForClassFields": true,
-    "useUnknownInCatchVariables": true
+    "useUnknownInCatchVariables": true,
+    "verbatimModuleSyntax": true
   },
-  "exclude": ["**/__testfixtures__/**"]
+  "exclude": ["dist", "**/__testfixtures__/**"]
 }
