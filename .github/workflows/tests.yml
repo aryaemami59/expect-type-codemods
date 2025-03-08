@@ -2,10 +2,6 @@ name: CI
 
 on: [push, pull_request, workflow_dispatch]
 
-concurrency:
-  group: '${{ github.workflow }} - ${{ github.head_ref || github.ref }}'
-  cancel-in-progress: true
-
 jobs:
   check-lint-and-formatting:
     name: Check lint and formatting with Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
