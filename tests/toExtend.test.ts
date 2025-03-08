@@ -1,3 +1,4 @@
+import { globby } from 'globby'
 import { applyTransform } from 'jscodeshift/src/testUtils.js'
 import * as fs from 'node:fs/promises'
 import * as path from 'node:path'
@@ -19,8 +20,6 @@ const tempDirectoryPath = path.join(tempParentDirectoryPath, transformerName)
 
 describe(toExtendTransform, () => {
   describe(transformerName, async () => {
-    const { globby } = await import('globby')
-
     const entries = await globby('**/*.input.*', {
       cwd: fixtureDirectoryPath,
       absolute: true,
