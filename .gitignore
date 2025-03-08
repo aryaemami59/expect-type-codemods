@@ -14,10 +14,10 @@
 
 .DS_Store
 *.log
-node_modules
-dist
+node_modules/
+dist/
 
-.yalc
+.yalc/
 yalc.lock
 yalc.sig
 
@@ -30,8 +30,7 @@ build/
 .rts2*
 coverage/
 
-.cache
-.yarnrc
+.cache/
 .yarn/*
 !.yarn/patches
 !.yarn/releases
