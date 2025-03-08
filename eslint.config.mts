@@ -1,6 +1,6 @@
 import js from '@eslint/js'
 import vitestPlugin from '@vitest/eslint-plugin'
-import prettierConfig from 'eslint-config-prettier'
+import prettierConfig from 'eslint-config-prettier/flat'
 import type { ConfigArray } from 'typescript-eslint'
 import { configs } from 'typescript-eslint'
 
@@ -19,7 +19,7 @@ const eslintConfig = [
       '**/__testfixtures__/',
     ],
   },
-  { name: '@eslint/js/recommended', ...js.configs.recommended },
+  { name: `${js.meta.name}/recommended`, ...js.configs.recommended },
   ...configs.strictTypeChecked,
   ...configs.stylisticTypeChecked,
   { name: 'vitest/recommended', ...vitestPlugin.configs.recommended },
@@ -56,6 +56,7 @@ const eslintConfig = [
           ignoreRestSiblings: true,
         },
       ],
+
       'vitest/valid-title': [0],
       'vitest/no-alias-methods': [2],
       'vitest/no-disabled-tests': [2],
@@ -75,7 +76,8 @@ const eslintConfig = [
       },
     },
   },
-  { name: 'eslint-config-prettier', ...prettierConfig },
+
+  prettierConfig,
 ] satisfies ConfigArray
 
 export default eslintConfig
